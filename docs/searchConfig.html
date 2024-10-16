@@ -113,25 +113,65 @@
 </aside>
 
 <main id="content">
-    <h1>Chi-Scraper</h1>
-<p>This tool helps you turn the firehose of content from the ArXiv into a pleasent trickle you can take a sip from every day.</p>
-<p>Put simply, it is a powerful filtering system, combined with a LLM powered ranking algorithm. This means you only see what is relevant to you, and what is most relevant first.</p>
-<h2>How To Install</h2>
-<p>For detailed install instructions, go to the guide on the side bar. For quick-start.</p>
-<pre><code class="language-bash">
-git pull myrepo-here
-python -m venv .venv
-source ./.venv/bin/activate
-pip install -r requirements
-python ./ChiScraper
-
+    <h1>1. Configuration File Structure</h1>
+<p>The configuration file is a JSON file that contains several key-value pairs. Each key represents a specific search criterion or setting, and the values define the parameters for that criterion. Here is a breakdown of the keys you can include in your configuration file:</p>
+<p>Items within square brackets are combined with an AND operation, and between square brackets are OR operations.</p>
+<h1>2. Required Keys</h1>
+<h2>2.1 config_tag:</h2>
+<p><strong>Type</strong>: String
+<strong>Description</strong>: A unique identifier for the configuration. This tag is used to label the articles retrieved using this configuration.</p>
+<h2>2.2 list_authors:</h2>
+<p><strong>Type</strong>: List of Strings
+<strong>Description</strong>: A list of author names to include in the search. If left empty, the search will not filter by authors.</p>
+<h2>2.3 list_categories:</h2>
+<p><strong>Type</strong>: List of Strings
+<strong>Description</strong>: A list of arXiv categories to search within. Each category is represented by its arXiv identifier (e.g., &quot;astro-ph.IM&quot;).</p>
+<h2>2.4 list_keywords_exclude:</h2>
+<p><strong>Type</strong>: List of Lists of Strings
+<strong>Description</strong>: Keywords or phrases to exclude from the search. Articles containing any of these keywords will be filtered out.</p>
+<h2>2.5 list_keywords_include:</h2>
+<p><strong>Type</strong>: List of Lists of Strings
+<strong>Description</strong>: Keywords or phrases to include in the search. The script uses set theory to match these keywords. Each sublist represents a set of keywords that must all be present in an article for it to be considered relevant.</p>
+<h1>3 Example Configuration Files</h1>
+<p>Here are two example configuration files:</p>
+<h2>3.1 Quantum Optics Configuration</h2>
+<pre><code class="language-json">{
+    &quot;config_tag&quot;: &quot;QuantumOptics&quot;,
+    &quot;list_authors&quot;: [],
+    &quot;list_categories&quot;: [&quot;astro-ph.IM&quot;, &quot;physics.optics&quot;, &quot;eess.SP&quot;],
+    &quot;list_keywords_exclude&quot;: [],
+    &quot;list_keywords_include&quot;: [
+        [&quot;qubit&quot;],
+        [&quot;QKD&quot;],
+        [&quot;quantum&quot;, &quot;key&quot;, &quot;distribution&quot;],
+        [&quot;quantum&quot;, &quot;communication&quot;]
+    ]
+}
 </code></pre>
-<h2>How to use</h2>
-<h1>Credits</h1>
-<ul>
-<li>Neco Kriel</li>
-<li>Cameron Jones</li>
-</ul>
+<p>This will search for articles with the keywords &quot;qubit&quot; OR &quot;QKD&quot; OR (&quot;quantum&quot; and &quot;key&quot; and &quot;distribution&quot;) OR (&quot;quantum&quot; AND &quot;communication&quot;)</p>
+<h2>3.2 FSOC Configuration</h2>
+<pre><code class="language-json">{
+    &quot;config_tag&quot;: &quot;FSOC&quot;,
+    &quot;list_authors&quot;: [],
+    &quot;list_categories&quot;: [&quot;astro-ph.IM&quot;, &quot;physics.optics&quot;, &quot;eess.SP&quot;],
+    &quot;list_keywords_exclude&quot;: [],
+    &quot;list_keywords_include&quot;: [
+        [&quot;adaptive&quot;, &quot;optics&quot;],
+        [[&quot;atmosphere&quot;, &quot;atmospheric&quot;], &quot;turbulence&quot;],
+        [&quot;wavefront&quot;, &quot;sensor&quot;],
+        [&quot;free&quot;, &quot;space&quot;],
+        [&quot;optical&quot;, &quot;communication&quot;]
+    ]
+}
+</code></pre>
+<p>This will search for articles with (&quot;adaptive&quot; AND &quot;optics&quot;) OR ( (&quot;atmosphere&quot; or &quot;atmospherioc&quot;) AND &quot;turbulence&quot;), or (&quot;wavefront&quot; and &quot;sensor&quot;) or (&quot;free&quot; and &quot;space&quot;) or (&quot;optical&quot; and &quot;communication&quot;).</p>
+<h1>4 How to Use the Configuration</h1>
+<ol>
+<li>Create a JSON file: Write your configuration in a JSON file, following the structure and examples provided above.
+Place the file in the correct directory: Ensure the JSON file is located in the directory specified by the CONFIG_DIRECTORY in your script.
+Run the script: Execute the search_arxiv.py script. It will read the configuration file, perform the search based on the specified criteria, and output the results as configured.
+By following these steps, you can customize the search behavior of the script to suit your specific research needs.</li>
+</ol>
 
 </main>
 

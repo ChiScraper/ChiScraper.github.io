@@ -113,25 +113,45 @@
 </aside>
 
 <main id="content">
-    <h1>Chi-Scraper</h1>
-<p>This tool helps you turn the firehose of content from the ArXiv into a pleasent trickle you can take a sip from every day.</p>
-<p>Put simply, it is a powerful filtering system, combined with a LLM powered ranking algorithm. This means you only see what is relevant to you, and what is most relevant first.</p>
-<h2>How To Install</h2>
-<p>For detailed install instructions, go to the guide on the side bar. For quick-start.</p>
-<pre><code class="language-bash">
-git pull myrepo-here
-python -m venv .venv
-source ./.venv/bin/activate
-pip install -r requirements
-python ./ChiScraper
-
+    <h1>Quickstart</h1>
+<ol>
+<li>Install Ollama from <code>https://ollama.com/</code></li>
+<li>Pull Llama3.1 8b</li>
+</ol>
+<pre><code class="language-bash">ollama pull llama3.18b
 </code></pre>
-<h2>How to use</h2>
-<h1>Credits</h1>
-<ul>
-<li>Neco Kriel</li>
-<li>Cameron Jones</li>
-</ul>
+<ol start="3">
+<li>Edit <code>host</code> and <code>ai_model</code> in the config</li>
+</ol>
+<pre><code class="language-yaml">host: local
+ai_model: llama3.1:8b
+</code></pre>
+<p><strong>Detailed instructions and configuration below</strong></p>
+<h1>Intructions for AI Evalutation</h1>
+<p>To use the AI-LLM capabilities, you will need to install some an external program called &quot;Ollama&quot;. This is a piece of middleware that lets you host LLMs locally.</p>
+<h2>Installing Ollama</h2>
+<h3>Linux</h3>
+<pre><code class="language-bash">curl -fsSL https://ollama.com/install.sh | sh
+</code></pre>
+<h3>Mac</h3>
+<p>Install from https://ollama.com/download/mac and follow the setup instructions in the app.</p>
+<h3>Windows</h3>
+<p>Ollama for windows is avaliable at https://ollama.com/download/windows.</p>
+<h2>Verify Ollama is running.</h2>
+<p>Navigating to http://localhost:11434 in your web browser will tell you if it is running correctly.</p>
+<h2>Pull a model</h2>
+<p>Ollama has a whole bunch of models to pick from. My reccomendation is Llama3 8b. This can be downloaded.</p>
+<pre><code>ollama pull llama3.1:8b
+</code></pre>
+<p>If you choose another model, ensure you update the config.</p>
+<h3>Picking other models.</h3>
+<p>I reccomend Llama3 8b because it balences system requirements with performance. The model takes about 45s per article on my laptop. For more intelligent reccomendation, try a larger model. e.g. <code>mistral-nemo:12b</code>. If you want faster performance, and can tolerate dumber reccomendations, consider phi3 mini.</p>
+<p>See the avaliable models at https://ollama.com/library</p>
+<h1>Configuring Chi-Scraper</h1>
+<p>Within <code>config.yaml</code> set the host to <code>local</code> and the <code>ai_model</code> to whichever model you have downloaded and plan on using.</p>
+<pre><code class="language-yaml">host: local
+ai_model: llama3.1:8b
+</code></pre>
 
 </main>
 

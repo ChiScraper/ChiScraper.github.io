@@ -113,25 +113,35 @@
 </aside>
 
 <main id="content">
-    <h1>Chi-Scraper</h1>
-<p>This tool helps you turn the firehose of content from the ArXiv into a pleasent trickle you can take a sip from every day.</p>
-<p>Put simply, it is a powerful filtering system, combined with a LLM powered ranking algorithm. This means you only see what is relevant to you, and what is most relevant first.</p>
-<h2>How To Install</h2>
-<p>For detailed install instructions, go to the guide on the side bar. For quick-start.</p>
-<pre><code class="language-bash">
-git pull myrepo-here
-python -m venv .venv
-source ./.venv/bin/activate
-pip install -r requirements
-python ./ChiScraper
-
+    <h1>How to run the AI Ranking Algorithm</h1>
+<p>Currently, you have two choices:</p>
+<ol>
+<li>Run off OpenAI</li>
+<li>Run the AI locally.</li>
+</ol>
+<p>Running the reccomendation algorithm on OpenAIs servers and with their models is faster, but you will need to generate an API key and load your account with some credit. Running it locally is easy, but time consuming.</p>
+<h1>OpenAI Quickstart</h1>
+<ol>
+<li>Create an account with OpenAI and generate an API key</li>
+<li>Save the API key as a Environment Variable <code>OPENAI_API_KEY</code> to your system</li>
+<li>Verify the config</li>
+</ol>
+<pre><code class="language-yaml">host: OpenAI
+ai_model: gpt-4o-mini
 </code></pre>
-<h2>How to use</h2>
-<h1>Credits</h1>
-<ul>
-<li>Neco Kriel</li>
-<li>Cameron Jones</li>
-</ul>
+<h1>Ollama Quickstart</h1>
+<ol>
+<li>Install Ollama from <code>https://ollama.com/</code></li>
+<li>Pull Llama3.1 8b</li>
+</ol>
+<pre><code class="language-bash">ollama pull llama3.1:8b
+</code></pre>
+<ol start="3">
+<li>Edit <code>host</code> and <code>ai_model</code> in the config</li>
+</ol>
+<pre><code class="language-yaml">host: local
+ai_model: llama3.1:8b
+</code></pre>
 
 </main>
 
