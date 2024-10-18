@@ -77,6 +77,7 @@ header {
   border-radius: var(--round-borders);
   overflow: hidden;
   background: var(--content-background-color);
+  padding-bottom: var(--padding); /* Added padding to the bottom */
 }
 
 .header-content {
@@ -165,6 +166,8 @@ main {
   background: var(--content-background-color);
   border: var(--border);
   border-radius: var(--round-borders);
+  width: 800px; /* Set a maximum width for the main content */
+  margin: 0 auto; /* Center the main content */
 }
 
 footer {
@@ -330,6 +333,20 @@ main pre {
 main code {
   text-transform: none;
 }
+
+pre {
+  background-color: #f5f5f5; /* Light background for code block */
+  border: 1px solid #ccc; /* Border around the code block */
+  border-radius: 5px; /* Rounded corners */
+  padding: 10px; /* Padding inside the code block */
+  overflow-x: auto; /* Allow horizontal scrolling if needed */
+}
+
+code {
+  font-family: monospace; /* Monospace font for code */
+  color: #d63384; /* Color for the code text */
+}
+
 
 main center {
   margin: 1em 0;

@@ -26,5 +26,5 @@ python ./ChiScraper
 ## How to use
 
 # Credits
-- Neco Kriel
-- Cameron Jones
+- [Neco Kriel](https://astrokriel.github.io/) 
+- [Cameron Jones](https://caffeineandlasers.neocities.org/)
