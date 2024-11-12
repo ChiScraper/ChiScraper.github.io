@@ -51,7 +51,7 @@ For detailed install instructions, go to the guide on the side bar. For quick-st
 
 ```bash
 
-git pull myrepo-here
+git pull https://github.com/ChiScraper/ChiScraper.git
 pip install -r requirements
 python ./ChiScraper
 
