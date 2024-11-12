@@ -62,7 +62,7 @@
 <div class="sidebar-section">
   <div class="sidebar-title">About The Program</div>
   <blockquote>
-    <p>This tool helps you turn the firehose of content from the ArXiv into a pleasent trickle you can take a sip from every day.</p>
+    <p>ChiCurate lets you curate your own personal feed for browsing the ArXiv. </p>
   </blockquote>
 </div>
 
@@ -80,12 +80,26 @@
     <h1>Chi-Scraper</h1>
 <p>This tool helps you turn the firehose of content from the ArXiv into a pleasent trickle you can take a sip from every day.</p>
 <p>Put simply, it is a powerful filtering system, combined with a LLM powered ranking algorithm. This means you only see what is relevant to you, and what is most relevant first.</p>
+<h2>How To Use</h2>
+<h3>Collect Articles</h3>
+<pre><code>python ./main.py -s -c &lt;config name&gt; -lb &lt;number of days to seach&gt;
+</code></pre>
+<h3>Rank Articles</h3>
+<pre><code>python ./main.py -r
+</code></pre>
+<h3>Display Articles</h3>
+<p>While you can browse the generated markdown files in your favourite markdown editor. E.g. Obsidian. You can also browse them in our web app.</p>
+<pre><code>python ./main -w
+</code></pre>
+<h3>Do it all!</h3>
+<p>You can combine the flags to do all three.</p>
+<pre><code>python ./main -s -r -w -c &lt;configname&gt; -lb &lt;lookback days&gt; -sk
+</code></pre>
+<p>The <code>-sk</code> flag will run the entire program without prompting you for further input. It defaults to <strong>not</strong> modifying any entries on disk in the case of a duplicate.</p>
 <h2>How To Install</h2>
 <p>For detailed install instructions, go to the guide on the side bar. For quick-start.</p>
 <pre><code class="language-bash">
 git pull myrepo-here
-python -m venv .venv
-source ./.venv/bin/activate
 pip install -r requirements
 python ./ChiScraper
 
