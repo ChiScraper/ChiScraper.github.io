@@ -22,7 +22,7 @@ Running the reccomendation algorithm on OpenAIs servers and with their models is
 {
   "source_url": "https://api.openai.com/v1",
   "model": "gpt-4o-mini",
-  "API_SYS_ENV": "OPEN_API_KEY",
+  "API_SYS_ENV": "OPEN_API_KEY"
 }
 ```
 
