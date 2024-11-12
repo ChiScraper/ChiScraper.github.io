@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArXiv Round Up</title>
+    <link rel="stylesheet" href="/home/cameron/Documents/projects/NonPhD/arXivScraper/src/scripts/WebAppConfig/static/style.css">
+    <style>
+        :root {
+            
+            --color-primary: #1E90FF;
+            
+            --color-primary-hover: #1C7CD6;
+            
+            --color-primary-light: #e6f3ff;
+            
+            --color-secondary: #4CAF50;
+            
+            --color-secondary-hover: #45a049;
+            
+            --color-tertiary: #008CBA;
+            
+            --color-tertiary-hover: #007B9A;
+            
+            --color-background: #f0f8ff;
+            
+            --color-text: #333;
+            
+            --color-text-light: #666;
+            
+            --color-border: #ddd;
+            
+            --color-shadow: rgba(0,0,0,0.1);
+            
+            --color-confidence-bar: #e0e0e0;
+            
+            --color-abstract-background: #f9f9f9;
+
+
+
+body {
+    font-family: Arial, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--color-background-darker);
+
+}
+
+.page-frontmatter {
+    margin-bottom: 40px;
+    background-color: var(--color-background);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--color-shadow);
+}
+.page-frontmatter h1 {
+    color: var(--color-text); /* Change color to color-text */
+}
+
+.article-section {
+    border: 1px solid var(--color-border);
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: var(--color-background);
+}
+.article-index {
+    color: var(--color-text);
+    font-weight: bold;
+}
+.article-title {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+.article-meta {
+    color: var(--color-text-light);
+    font-size: 0.9em;
+}
+.article-abstract {
+    margin-top: 10px;
+    background-color: var(--color-abstract-background);
+    padding: 10px;
+    border-left: 3px solid var(--color-secondary);
+}
+.article-ai {
+    margin-top: 10px;
+    font-style: italic;
+    background-color: var(--color-background);
+    padding: 10px;
+    border-left: 3px solid var(--color-primary);
+}
+
+.sort-container {
+    margin-bottom: 20px;
+}
+.pdf-button, .link-button, .process-button {
+    display: inline-block;
+    padding: 5px 10px;
+    color: white;
+    text-decoration: none;
+    border-radius: 3px;
+    font-size: 0.9em;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+.article-arxiv-id {
+    background-color: var(--color-primary);
+    color: rgb(255, 0, 0);
+    padding: 3px 6px;
+    border-radius: 5px;
+    display: inline-block;
+    max-width: fit-content;
+    font-size: 0.9em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.pdf-button {
+    background-color: var(--color-secondary);
+}
+.pdf-button:hover {
+    background-color: var(--color-secondary-hover);
+}
+.process-button {
+    background-color: var(--color-tertiary);
+}
+.process-button:hover {
+    background-color: var(--color-tertiary-hover);
+}
+.link-button {
+    background-color: var(--color-primary);
+}
+.link-button:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.settings-button {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.settings-button:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.confidence-bar {
+    width: 100%;
+    background-color: var(--color-confidence-bar);
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.confidence-level {
+    height: 100%;
+    background-color: var(--color-secondary);
+    text-align: right;
+    padding-right: 5px;
+    line-height: 20px;
+    color: white;
+}
+#filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+#filter-form label {
+    font-weight: bold;
+    color: var(--color-text);
+}
+#filter-form select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid var(--color-border);
+}
+
+
+.article-title {
+    color: var(--color-text);
+}
+.article-meta {
+    color: var(--color-text-light);
+}
+.article-abstract {
+    margin-top: 10px;
+    background-color: var(--color-abstract-background);
+    padding: 10px;
+    border-left: 3px solid var(--color-secondary);
+    color: var(--color-text);
+}
+.article-ai {
+    margin-top: 10px;
+    font-style: italic;
+    background-color: var(--color-background);
+    padding: 10px;
+    border-left: 3px solid var(--color-primary);
+    color: var(--color-text);
+}
+.pdf-button, .process-button {
+    color: white;
+}
+.article-arxiv-id {
+    color: var(--color-primary-light);
+}
+.confidence-level {
+    color: white;
+}
+
+
+/* Add styles for the toggle button */
+.toggle-justification {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+.toggle-justification:hover {
+    background-color: var(--color-primary-hover);
+}
+
+/* Optional: Add styles for the AI Justification section */
+.ai-justification {
+    margin-top: 10px;
+    font-style: italic;
+    color: var(--color-text-light);
+    background-color: var(--color-background-light); /* Optional: adjust background color */
+    padding: 10px;
+}
+
+
+#filter-form label {
+    color: var(--color-text);
+}
+
+
+
+            
+        }
+    </style>
+
+    <script>
+
+function applyFilters() {
+    document.getElementById('filter-form').submit();
+}
+
+function toggleJustification(button) {
+    const justification = button.nextElementSibling;
+    if (justification.style.display === "none") {
+        justification.style.display = "block";
+        button.textContent = "AI Justification";
+    } else {
+        justification.style.display = "none";
+        button.textContent = "AI Justification";
+    }
+}
+
+// Store the scroll position before unload
+window.addEventListener('beforeunload', function() {
+    localStorage.setItem('scrollPosition', window.scrollY);
+});
+
+// Scroll to the stored position after the page loads
+window.addEventListener('load', function() {
+    if (localStorage.getItem('scrollPosition') !== null) {
+        window.scrollTo(0, parseInt(localStorage.getItem('scrollPosition')));
+        localStorage.removeItem('scrollPosition'); // Optional: Clear the stored position
+    }
+});
+
+    </script>
+
+</head>
+
+<body>
+    <!-- Page Front Matter -->
+    <div class="page-frontmatter">
+        <h1>ArXiv Round Up</h1>
+
+    <!-- Filter and Sort Parameters -->
+    <form id="filter-form" method="get"> 
+        <label for="sort_by">Sort by:</label>
+        <select name="sort_by" id="sort_by" onchange="applyFilters()">
+            <option value="date_published" >Publish Date</option>
+            <option value="date_updated" >Update Date</option>
+            <option value="ai_rating" selected>AI Rating</option>
+        </select>
+        
+        <label for="filter_tag">Filter by tag:</label>
+        <select name="filter_tag" id="filter_tag" onchange="applyFilters()">
+            <option value="">All tags</option>
+            
+                <option value="#FSOC" >#FSOC</option>
+            
+                <option value="#QuantumOptics" >#QuantumOptics</option>
+            
+                <option value="#PCF" >#PCF</option>
+            
+        </select>
+
+        <label for="show_processed">Show Only:</label>
+        <select name="show_processed" id="show_processed" onchange="applyFilters()">
+            <option value="a" >All articles</option>
+            <option value="u" >Unprocessed</option>
+            <option value="r" selected>To Read</option>
+            <option value="R" >Read</option>
+            <option value="d" >To Download</option>
+            <option value="D" >Downloaded</option>
+            <option value="-" >Not Relevant</option>
+        </select>
+
+    </form>
+
+    <!-- Settings Button -->
+    <button onclick="window.location.href='/settings'" class="settings-button">Settings</button>
+    </div>
+
+    <!-- List of Articles -->
+    
+    <div class="article-section">
+        <div class="article-index" style="display: inline;">1.</div>
+        <div class="article-arxiv-id" style="display: inline;">2410.18789</div>
+        <div class="article-title"style="display: inline;">Single-Shot Phase Diversity Wavefront Sensing in Deep Turbulence via Metasurface Optics</div>
+        <div class="article-meta">
+            <p><strong>Authors:</strong> Arturo Martin Jimenez,Marc Baltes,Jackson Cornelius,Neset Akozbek,Zachary Coppens</p>
+            <p><strong>Published Date:</strong> 24-10-2024</p>
+            <p><strong>Category:</strong> physics.optics</p>
+            <p><strong>Tags:</strong> #FSOC</p>
+            <a href="http://arxiv.org/pdf/2410.18789v1" target="_blank" class="pdf-button">View PDF</a>
+            <a href="/link/2410.18789" class="link-button">Link</a>
+            
+
+            <!-- Drop Down Menu for processed -->
+            <select name="process_status" class="process-button" onchange="location.href='/process/2410.18789?status=' + this.value">
+                <option value="u" >Unprocessed</option>
+                <option value="r" selected>To Read</option>
+                <option value="R" >Read</option>
+                <option value="d" >To Download</option>
+                <option value="D" >Download</option>
+                <option value="-" >Not Relevant</option>
+            </select>
+
+        <!-- TO DO: Make Abstract and AI Justification Collapsable again -->
+        </div> 
+        <div class="article-abstract">
+            <strong>Abstract:</strong> Free-space optical communication (FSOC) systems offer high-bandwidth and secure communication with minimal capital costs. Adaptive optics (AO) are typically added to these systems to decrease atmospheric channel losses; however, the performance of traditional AO wavefront sensors degrades in long-range, deep turbulence conditions. Alternative wavefront sensors using phase diversity can successfully reconstruct wavefronts in deep turbulence, but current implementations require bulky setups with high latency. In this work, we employ a nanostructured birefringent metasurface optic that enables low-latency phase diversity wavefront sensing in a compact form factor. We prove the effectiveness of this approach in mid-to-high turbulence (Rytov numbers from 0.2 to 0.6) through simulation and experimental demonstration. In both cases an average 16-fold increase in signal from the corrected beam is obtained. Our approach opens a pathway for compact, robust wavefront sensing that enhances range and accuracy of FSOC systems.
+        </div>
+        <div class="article-ai">
+            <p><strong>AI Confidence:</strong> 90%</p>
+            <div class="confidence-bar">
+                <div class="confidence-level" style="width: 90.0%">
+                </div>
+            </div>
+            <button class="toggle-justification" onclick="toggleJustification(this)">AI Justification</button>
+            <p class="ai-justification" style="display: none;"><strong>AI Justification:</strong> This paper is highly relevant to your research as it directly discusses &#34;Free-space optical communication (FSOC) systems&#34; and explores &#34;Adaptive optics (AO)&#34;, which are both key areas of your focus. Furthermore, the paper’s investigation into &#34;phase diversity wavefront sensing in deep turbulence&#34; aligns with your interest in wavefront sensors and their application in enhancing communication technology for spacecraft, thereby providing potential insights into your work with fiber optic technology for wavefront sensing.</p>
+        </div>
+    </div>
+        
+    <div class="article-section">
+        <div class="article-index" style="display: inline;">2.</div>
+        <div class="article-arxiv-id" style="display: inline;">2410.15172</div>
+        <div class="article-title"style="display: inline;">Efficient and Adaptive Reconfiguration of Light Structure in Optical Fibers with Programmable Silicon Photonics</div>
+        <div class="article-meta">
+            <p><strong>Authors:</strong> Wu Zhou,Zengqi Chen,Kaihang Lu,Hao Chen,Mingyuan Zhang,Wenzhang Tian,...</p>
+            <p><strong>Published Date:</strong> 19-10-2024</p>
+            <p><strong>Category:</strong> physics.optics</p>
+            <p><strong>Tags:</strong> #FSOC,#QuantumOptics</p>
+            <a href="http://arxiv.org/pdf/2410.15172v1" target="_blank" class="pdf-button">View PDF</a>
+            <a href="/link/2410.15172" class="link-button">Link</a>
+            
+
+            <!-- Drop Down Menu for processed -->
+            <select name="process_status" class="process-button" onchange="location.href='/process/2410.15172?status=' + this.value">
+                <option value="u" >Unprocessed</option>
+                <option value="r" selected>To Read</option>
+                <option value="R" >Read</option>
+                <option value="d" >To Download</option>
+                <option value="D" >Download</option>
+                <option value="-" >Not Relevant</option>
+            </select>
+
+        <!-- TO DO: Make Abstract and AI Justification Collapsable again -->
+        </div> 
+        <div class="article-abstract">
+            <strong>Abstract:</strong> The demand for structured light with a reconfigurable spatial and polarization distribution has been increasing across a wide range of fundamental and advanced photonics applications, including microscopy, imaging, sensing, communications, and quantum information processing. Nevertheless, the unique challenge in manipulating light structure after optical fiber transmission is the necessity to dynamically address the inherent unknown fiber transmission matrix, which can be affected by factors like variations in the fiber stress and inter-modal coupling. In this study, we demonstrated that the beam structure at the fiber end including its spatial and polarization distribution can be precisely and adaptively reconfigured by a programmable silicon photonic processor, without prior knowledge of the optical fiber systems and their changes in the transmission matrices. Our demonstrated photonic chip can generate and control the full set of spatial and polarization modes or their superposition in a two-mode few-mode optical fiber. High-quality beam structures can be obtained in experiments. In addition, efficient generation is achieved by our proposed chip-to-fiber emitter while using a complementary metal-oxide-semiconductor compatible fabrication technology. Our findings present a scalable pathway towards achieving a portable and reliable system capable of achieving precise control, efficient emission, and adaptive reconfiguration for structured light in optical fibers.
+        </div>
+        <div class="article-ai">
+            <p><strong>AI Confidence:</strong> 90%</p>
+            <div class="confidence-bar">
+                <div class="confidence-level" style="width: 90.0%">
+                </div>
+            </div>
+            <button class="toggle-justification" onclick="toggleJustification(this)">AI Justification</button>
+            <p class="ai-justification" style="display: none;"><strong>AI Justification:</strong> This paper is highly relevant to your interests as it addresses &#34;reconfigurable spatial and polarization distribution&#34; in optical fibers, which aligns with your focus on Adaptive Optics and wavefront shaping techniques. The study&#39;s emphasis on a &#34;programmable silicon photonic processor&#34; for managing &#34;fiber transmission&#34; variations also provides unique insights that could enhance your work with fiber optic technology for wavefront sensing in Free Space Optical Communication applications.</p>
+        </div>
+    </div>
+        
+    <div class="article-section">
+        <div class="article-index" style="display: inline;">3.</div>
+        <div class="article-arxiv-id" style="display: inline;">2410.12111</div>
+        <div class="article-title"style="display: inline;">A low-cost, high-speed, very high-order Shack-Hartmann sensor for testing TMT deformable mirrors</div>
+        <div class="article-meta">
+            <p><strong>Authors:</strong> Mojtaba Taheri,David Andersen,Jean-Pierre Veran,Olivier Lardiere</p>
+            <p><strong>Published Date:</strong> 15-10-2024</p>
+            <p><strong>Category:</strong> astro-ph.IM</p>
+            <p><strong>Tags:</strong> #FSOC</p>
+            <a href="http://arxiv.org/pdf/2410.12111v1" target="_blank" class="pdf-button">View PDF</a>
+            <a href="/link/2410.12111" class="link-button">Link</a>
+            
+
+            <!-- Drop Down Menu for processed -->
+            <select name="process_status" class="process-button" onchange="location.href='/process/2410.12111?status=' + this.value">
+                <option value="u" >Unprocessed</option>
+                <option value="r" selected>To Read</option>
+                <option value="R" >Read</option>
+                <option value="d" >To Download</option>
+                <option value="D" >Download</option>
+                <option value="-" >Not Relevant</option>
+            </select>
+
+        <!-- TO DO: Make Abstract and AI Justification Collapsable again -->
+        </div> 
+        <div class="article-abstract">
+            <strong>Abstract:</strong> The Thirty Meter Telescope will use a sophisticated adaptive optics system called NFIRAOS. This system utilizes two deformable mirrors conjugate to 0 km and 11.2 km to apply a Multi-Conjugate Adaptive Optics (MCAO) correction over a 2 arcminute field of view. DM0 and DM11 have 63 and 75 actuators across their respective diameters. To study the behavior of these mirrors, we have developed a low-cost, very high-order Shack-Hartmann Wavefront Sensor (WFS). We will use our WFS to calibrate the flatness of the DMs and measure the influence functions of the actuators. NFIRAOS is cooled to reduce the thermal emissivity of optical surfaces visible to the science detectors, so we will also measure the behaviour of the DMs in both warm and cold environments. As the cold chamber is prone to vibrations, a WFS is preferred to a phase-shifting interferometer. Our design was driven by the need to be able to evaluate the DM surface between the actuators, which led to the requirement of at least 248 sub apertures across the diameter. The largest commercially available Shack-Hartmann WFS has only 128 sub-apertures across the diameter, which is not enough to properly sample these DMs. Furthermore, the designed sensor is able to record the wavefront at 50 FPS (50 times per second) at full resolution. To fabricate this WFS, we used a commercial off-the-shelf CMOS detector, camera lens, and lens let array, which kept the total cost less than 20K USD. Here we present the design and performance characteristics of this device.
+        </div>
+        <div class="article-ai">
+            <p><strong>AI Confidence:</strong> 90%</p>
+            <div class="confidence-bar">
+                <div class="confidence-level" style="width: 90.0%">
+                </div>
+            </div>
+            <button class="toggle-justification" onclick="toggleJustification(this)">AI Justification</button>
+            <p class="ai-justification" style="display: none;"><strong>AI Justification:</strong> This paper is highly relevant to your research interests as it discusses a &#34;very high-order Shack-Hartmann Wavefront Sensor,&#34; which aligns directly with your focus on &#34;wavefront sensing technology&#34; in the context of &#34;Adaptive Optics enabled optical communication.&#34; The paper&#39;s exploration of calibrating deformable mirrors and the ability to measure wavefront at &#34;50 FPS&#34; provides insight into practical advancements that could be beneficial for your work in &#34;fiber optic technology&#34; and &#34;photonic telecommunication.&#34;</p>
+        </div>
+    </div>
+        
+    <div class="article-section">
+        <div class="article-index" style="display: inline;">4.</div>
+        <div class="article-arxiv-id" style="display: inline;">2410.12084</div>
+        <div class="article-title"style="display: inline;">AI-Powered Low-Order Focal Plane Wavefront Sensing in Infrared</div>
+        <div class="article-meta">
+            <p><strong>Authors:</strong> Mojtaba Taheri,Mahdiyar Molahasani,Sam Ragland,Benoit Neichel,Peter Wizinowich</p>
+            <p><strong>Published Date:</strong> 15-10-2024</p>
+            <p><strong>Category:</strong> astro-ph.IM</p>
+            <p><strong>Tags:</strong> #FSOC</p>
+            <a href="http://arxiv.org/pdf/2410.12084v1" target="_blank" class="pdf-button">View PDF</a>
+            <a href="/link/2410.12084" class="link-button">Link</a>
+            
+
+            <!-- Drop Down Menu for processed -->
+            <select name="process_status" class="process-button" onchange="location.href='/process/2410.12084?status=' + this.value">
+                <option value="u" >Unprocessed</option>
+                <option value="r" selected>To Read</option>
+                <option value="R" >Read</option>
+                <option value="d" >To Download</option>
+                <option value="D" >Download</option>
+                <option value="-" >Not Relevant</option>
+            </select>
+
+        <!-- TO DO: Make Abstract and AI Justification Collapsable again -->
+        </div> 
+        <div class="article-abstract">
+            <strong>Abstract:</strong> Adaptive optics (AO) systems are crucial for high-resolution astronomical observations by compensating for atmospheric turbulence. While laser guide stars (LGS) address high-order wavefront aberrations, natural guide stars (NGS) remain vital for low-order wavefront sensing (LOWFS). Conventional NGS-based methods like Shack-Hartmann sensors have limitations in field of view, sensitivity, and complexity. Focal plane wavefront sensing (FPWFS) offers advantages, including a wider field of view and enhanced signal-to-noise ratio, but accurately estimating low-order modes from distorted point spread functions (PSFs) remains challenging. We propose an AI-powered FPWFS method specifically for low-order mode estimation in infrared wavelengths. Our approach is trained on simulated data and validated on on-telescope data collected from the Keck I adaptive optic (K1AO) bench calibration source in K-band. By leveraging the enhanced signal-to-noise ratio in the infrared and the power of AI, our method overcomes the limitations of traditional LOWFS techniques. This study demonstrates the effectiveness of AI-based FPWFS for low-order wavefront sensing, paving the way for more compact, efficient, and high-performing AO systems for astronomical observations.
+        </div>
+        <div class="article-ai">
+            <p><strong>AI Confidence:</strong> 90%</p>
+            <div class="confidence-bar">
+                <div class="confidence-level" style="width: 90.0%">
+                </div>
+            </div>
+            <button class="toggle-justification" onclick="toggleJustification(this)">AI Justification</button>
+            <p class="ai-justification" style="display: none;"><strong>AI Justification:</strong> The paper is highly relevant to your research focus as it discusses &#34;Adaptive optics&#34; and specifically highlights &#34;low-order wavefront sensing,&#34; which aligns well with your interest in wavefront sensing technology. Furthermore, the mention of AI in improving &#34;signal-to-noise ratio&#34; and compensating for &#34;atmospheric turbulence&#34; provides unique insights related to your hybrid research area of photonic telecommunication and astrophotonics.</p>
+        </div>
+    </div>
+        
+    <div class="article-section">
+        <div class="article-index" style="display: inline;">5.</div>
+        <div class="article-arxiv-id" style="display: inline;">2411.02985</div>
+        <div class="article-title"style="display: inline;">Sparse Reconstruction of Wavefronts using an Over-Complete Phase Dictionary</div>
+        <div class="article-meta">
+            <p><strong>Authors:</strong> S. Howard,N. Weisse,J. Schroeder,C. Barbero,B. Alonso,I. Sola,...</p>
+            <p><strong>Published Date:</strong> 05-11-2024</p>
+            <p><strong>Category:</strong> physics.optics</p>
+            <p><strong>Tags:</strong> #FSOC</p>
+            <a href="http://arxiv.org/pdf/2411.02985v1" target="_blank" class="pdf-button">View PDF</a>
+            <a href="/link/2411.02985" class="link-button">Link</a>
+            
+
+            <!-- Drop Down Menu for processed -->
+            <select name="process_status" class="process-button" onchange="location.href='/process/2411.02985?status=' + this.value">
+                <option value="u" >Unprocessed</option>
+                <option value="r" selected>To Read</option>
+                <option value="R" >Read</option>
+                <option value="d" >To Download</option>
+                <option value="D" >Download</option>
+                <option value="-" >Not Relevant</option>
+            </select>
+
+        <!-- TO DO: Make Abstract and AI Justification Collapsable again -->
+        </div> 
+        <div class="article-abstract">
+            <strong>Abstract:</strong> Wavefront reconstruction is a critical component in various optical systems, including adaptive optics, interferometry, and phase contrast imaging. Traditional reconstruction methods often employ either the Cartesian (pixel) basis or the Zernike polynomial basis. While the Cartesian basis is adept at capturing high-frequency features, it is susceptible to overfitting and inefficiencies due to the high number of degrees of freedom. The Zernike basis efficiently represents common optical aberrations but struggles with complex or non-standard wavefronts such as optical vortices, Bessel beams, or wavefronts with sharp discontinuities. This paper introduces a novel approach to wavefront reconstruction using an over-complete phase dictionary combined with sparse representation techniques. By constructing a dictionary that includes a diverse set of basis functions - ranging from Zernike polynomials to specialized functions representing optical vortices and other complex modes - we enable a more flexible and efficient representation of complex wavefronts. Furthermore, a trainable affine transform is implemented to account for misalignment. Utilizing principles from compressed sensing and sparse coding, we enforce sparsity in the coefficient space to avoid overfitting and enhance robustness to noise.
+        </div>
+        <div class="article-ai">
+            <p><strong>AI Confidence:</strong> 90%</p>
+            <div class="confidence-bar">
+                <div class="confidence-level" style="width: 90.0%">
+                </div>
+            </div>
+            <button class="toggle-justification" onclick="toggleJustification(this)">AI Justification</button>
+            <p class="ai-justification" style="display: none;"><strong>AI Justification:</strong> This paper is highly relevant to your research focus on &#34;Adaptive Optics enabled optical communication&#34; as it directly addresses the challenges of &#34;wavefront reconstruction,&#34; which is critical for various optical systems used in space applications. The introduction of a &#34;novel approach to wavefront reconstruction using an over-complete phase dictionary&#34; aligns with your interest in advanced methodologies, like &#34;fiber optic technology for wavefront sensing,&#34; enhancing the value it provides to your work.</p>
+        </div>
+    </div>
+        
+    <div class="article-section">
+        <div class="article-index" style="display: inline;">6.</div>
+        <div class="article-arxiv-id" style="display: inline;">2410.19097</div>
+        <div class="article-title"style="display: inline;">Hyperspectral wavefront sensing with a multicore fiber</div>
+        <div class="article-meta">
+            <p><strong>Authors:</strong> Baptiste Blochet,Nathalie Lebas,Pascal Berto,Dimitrios Papadopoulos,Marc Guillon</p>
+            <p><strong>Published Date:</strong> 24-10-2024</p>
+            <p><strong>Category:</strong> physics.optics</p>
+            <p><strong>Tags:</strong> #FSOC</p>
+            <a href="http://arxiv.org/pdf/2410.19097v1" target="_blank" class="pdf-button">View PDF</a>
+            <a href="/link/2410.19097" class="link-button">Link</a>
+            
+
+            <!-- Drop Down Menu for processed -->
+            <select name="process_status" class="process-button" onchange="location.href='/process/2410.19097?status=' + this.value">
+                <option value="u" >Unprocessed</option>
+                <option value="r" selected>To Read</option>
+                <option value="R" >Read</option>
+                <option value="d" >To Download</option>
+                <option value="D" >Download</option>
+                <option value="-" >Not Relevant</option>
+            </select>
+
+        <!-- TO DO: Make Abstract and AI Justification Collapsable again -->
+        </div> 
+        <div class="article-abstract">
+            <strong>Abstract:</strong> Single-shot hyperspectral wavefront sensing is essential for applications like spatio-spectral coupling metrology in high power laser or fast material dispersion imaging. Under broadband illumination, traditional wavefront sensors assume an achromatic wavefront, which makes them unsuitable. We introduce a hyperspectral wavefront sensing scheme based on the Hartmann wavefront sensing principles, employing a multicore fiber as a modified Hartmann mask to overcome these limitations. Our system leverages the angular memory effect and spectral decorrelation from the multicore fiber, encoding wavefront gradients into displacements and the spectral information into uncorrelated patterns. This method retains the simplicity, compactness, and single-shot capability of conventional wavefront sensors, with only a slight increase in computational complexity. It also allows a tunable trade-off between spatial and spectral resolution. We demonstrate its efficacy for recording the hyperspectral wavefront cube from single-pulse acquisitions at the Apollon multi-PW laser facility, and for performing multispectral microscopic imaging of dispersive phase objects.
+        </div>
+        <div class="article-ai">
+            <p><strong>AI Confidence:</strong> 80%</p>
+            <div class="confidence-bar">
+                <div class="confidence-level" style="width: 80.0%">
+                </div>
+            </div>
+            <button class="toggle-justification" onclick="toggleJustification(this)">AI Justification</button>
+            <p class="ai-justification" style="display: none;"><strong>AI Justification:</strong> The paper&#39;s focus on &#34;hyperspectral wavefront sensing&#34; and its application in &#34;high power laser&#34; aligns well with your interest in &#34;Adaptive Optics enabled optical communication,&#34; particularly in the context of &#34;wavefront sensing technology.&#34; Additionally, the use of &#34;multicore fiber&#34; as a method for advancing wavefront sensing provides a direct connection to your research on &#34;fiber optic technology&#34; and its hybridization with photonic telecommunication.</p>
+        </div>
+    </div>
+        
+    <div class="article-section">
+        <div class="article-index" style="display: inline;">7.</div>
+        <div class="article-arxiv-id" style="display: inline;">2410.15418</div>
+        <div class="article-title"style="display: inline;">A Hybrid Noise Approach to Modelling of Free-Space Satellite Quantum Communication Channel for Continuous-Variable QKD</div>
+        <div class="article-meta">
+            <p><strong>Authors:</strong> Mouli Chakraborty,Anshu Mukherjee,Ioannis Krikidis,Avishek Nag,Subhash Chandra</p>
+            <p><strong>Published Date:</strong> 20-10-2024</p>
+            <p><strong>Category:</strong> eess.SP</p>
+            <p><strong>Tags:</strong> #FSOC,#QuantumOptics</p>
+            <a href="http://arxiv.org/pdf/2410.15418v1" target="_blank" class="pdf-button">View PDF</a>
+            <a href="/link/2410.15418" class="link-button">Link</a>
+            
+
+            <!-- Drop Down Menu for processed -->
+            <select name="process_status" class="process-button" onchange="location.href='/process/2410.15418?status=' + this.value">
+                <option value="u" >Unprocessed</option>
+                <option value="r" selected>To Read</option>
+                <option value="R" >Read</option>
+                <option value="d" >To Download</option>
+                <option value="D" >Download</option>
+                <option value="-" >Not Relevant</option>
+            </select>
+
+        <!-- TO DO: Make Abstract and AI Justification Collapsable again -->
+        </div> 
+        <div class="article-abstract">
+            <strong>Abstract:</strong> This paper significantly advances the application of Quantum Key Distribution (QKD) in Free- Space Optics (FSO) satellite-based quantum communication. We propose an innovative satellite quantum channel model and derive the secret quantum key distribution rate achievable through this channel. Unlike existing models that approximate the noise in quantum channels as merely Gaussian distributed, our model incorporates a hybrid noise analysis, accounting for both quantum Poissonian noise and classical Additive-White-Gaussian Noise (AWGN). This hybrid approach acknowledges the dual vulnerability of continuous variables (CV) Gaussian quantum channels to both quantum and classical noise, thereby offering a more realistic assessment of the quantum Secret Key Rate (SKR). This paper delves into the variation of SKR with the Signal-to-Noise Ratio (SNR) under various influencing parameters. We identify and analyze critical factors such as reconciliation efficiency, transmission coefficient, transmission efficiency, the quantum Poissonian noise parameter, and the satellite altitude. These parameters are pivotal in determining the SKR in FSO satellite quantum channels, highlighting the challenges of satellitebased quantum communication. Our work provides a comprehensive framework for understanding and optimizing SKR in satellite-based QKD systems, paving the way for more efficient and secure quantum communication networks.
+        </div>
+        <div class="article-ai">
+            <p><strong>AI Confidence:</strong> 75%</p>
+            <div class="confidence-bar">
+                <div class="confidence-level" style="width: 75.0%">
+                </div>
+            </div>
+            <button class="toggle-justification" onclick="toggleJustification(this)">AI Justification</button>
+            <p class="ai-justification" style="display: none;"><strong>AI Justification:</strong> This paper is relevant to your research interests as it explores &#34;Free-Space Optics (FSO)&#34; and its application to &#34;satellite-based quantum communication,&#34; aligning with your focus on advanced communication technologies using lasers for space applications. The innovative &#34;hybrid noise analysis&#34; combines aspects of traditional communication with quantum mechanics, which could provide insights into noise management in your work with &#34;Adaptive Optics&#34; and &#34;wavefront sensing technology.&#34;</p>
+        </div>
+    </div>
+        
+    <div class="article-section">
+        <div class="article-index" style="display: inline;">8.</div>
+        <div class="article-arxiv-id" style="display: inline;">2410.09832</div>
+        <div class="article-title"style="display: inline;">Collecting single photons from a cavity-coupled quantum dot using an adiabatic tapered fiber</div>
+        <div class="article-meta">
+            <p><strong>Authors:</strong> Anatole Bach,Antoine Chapuis,Corentin Morin,Richard Hostein,Savvas Germanis,Benoit Eble,...</p>
+            <p><strong>Published Date:</strong> 13-10-2024</p>
+            <p><strong>Category:</strong> physics.optics</p>
+            <p><strong>Tags:</strong> #PCF</p>
+            <a href="http://arxiv.org/pdf/2410.09832v1" target="_blank" class="pdf-button">View PDF</a>
+            <a href="/link/2410.09832" class="link-button">Link</a>
+            
+
+            <!-- Drop Down Menu for processed -->
+            <select name="process_status" class="process-button" onchange="location.href='/process/2410.09832?status=' + this.value">
+                <option value="u" >Unprocessed</option>
+                <option value="r" selected>To Read</option>
+                <option value="R" >Read</option>
+                <option value="d" >To Download</option>
+                <option value="D" >Download</option>
+                <option value="-" >Not Relevant</option>
+            </select>
+
+        <!-- TO DO: Make Abstract and AI Justification Collapsable again -->
+        </div> 
+        <div class="article-abstract">
+            <strong>Abstract:</strong> We demonstrate efficient in-plane optical fiber collection of single photon emission from quantum dots embedded in photonic crystal cavities. This was achieved via adiabatic coupling between a tapered optical fiber and a tapered on-chip photonic waveguide coupled to the photonic crystal cavity. The collection efficiency of a dot in a photonic crystal cavity was measured to be 5 times greater via the tapered optical fiber compared to collection by a microscope objective lens above the cavity. The single photon source was also characterized by second order photon correlations measurements giving g(2)(0)=0.17 under non-resonant excitation. Numerical calculations demonstrate that the collection efficiency could be further increased by improving the dot-cavity coupling and by increasing the overlap length of the tapered fiber with the on-chip waveguide. An adiabatic coupling of near unity is predicted for an overlap length of 5 microns.
+        </div>
+        <div class="article-ai">
+            <p><strong>AI Confidence:</strong> 75%</p>
+            <div class="confidence-bar">
+                <div class="confidence-level" style="width: 75.0%">
+                </div>
+            </div>
+            <button class="toggle-justification" onclick="toggleJustification(this)">AI Justification</button>
+            <p class="ai-justification" style="display: none;"><strong>AI Justification:</strong> This paper presents a methodology that leverages &#34;adiabatic coupling&#34; between fibers and waveguides for enhancing single photon collection, which aligns with your interest in &#34;fiber optic technology for wavefront sensing technology.&#34; The focus on &#34;efficient in-plane optical fiber collection&#34; provides insights into optimizing optical communication strategies, which could be valuable for your research in &#34;Free Space Optical Communication&#34; and &#34;Adaptive Optics.&#34;</p>
+        </div>
+    </div>
+        
+    <div class="article-section">
+        <div class="article-index" style="display: inline;">9.</div>
+        <div class="article-arxiv-id" style="display: inline;">2411.06832</div>
+        <div class="article-title"style="display: inline;">Optimized Quality of Service prediction in FSO Links over South Africa using Ensemble Learning</div>
+        <div class="article-meta">
+            <p><strong>Authors:</strong> S. O. Adebusola,P. A. Owolawi,J. S. Ojo,P. S. Maswikaneng</p>
+            <p><strong>Published Date:</strong> 11-11-2024</p>
+            <p><strong>Category:</strong> stat.ML</p>
+            <p><strong>Tags:</strong> #FSOC</p>
+            <a href="http://arxiv.org/pdf/2411.06832v1" target="_blank" class="pdf-button">View PDF</a>
+            <a href="/link/2411.06832" class="link-button">Link</a>
+            
+
+            <!-- Drop Down Menu for processed -->
+            <select name="process_status" class="process-button" onchange="location.href='/process/2411.06832?status=' + this.value">
+                <option value="u" >Unprocessed</option>
+                <option value="r" selected>To Read</option>
+                <option value="R" >Read</option>
+                <option value="d" >To Download</option>
+                <option value="D" >Download</option>
+                <option value="-" >Not Relevant</option>
+            </select>
+
+        <!-- TO DO: Make Abstract and AI Justification Collapsable again -->
+        </div> 
+        <div class="article-abstract">
+            <strong>Abstract:</strong> Fibre optic communication system is expected to increase exponentially in terms of application due to the numerous advantages over copper wires. The optical network evolution presents several advantages such as over long-distance, low-power requirement, higher carrying capacity and high bandwidth among others Such network bandwidth surpasses methods of transmission that include copper cables and microwaves. Despite these benefits, free-space optical communications are severely impacted by harsh weather situations like mist, precipitation, blizzard, fume, soil, and drizzle debris in the atmosphere, all of which have an impact on the Quality of Service (QoS) rendered by the systems. The primary goal of this article is to optimize the QoS using the ensemble learning models Random Forest, ADaBoost Regression, Stacking Regression, Gradient Boost Regression, and Multilayer Neural Network. To accomplish the stated goal, meteorological data, visibility, wind speed, and altitude were obtained from the South Africa Weather Services archive during a ten-year period (2010 to 2019) at four different locations... Polokwane, Kimberley, Bloemfontein, and George. We estimated the data rate, power received, fog-induced attenuation, bit error rate and power penalty using the collected and processed data. The RMSE and R-squared values of the model across all the study locations, Polokwane, Kimberley, Bloemfontein, and George, are 0.0073 and 0.9951, 0.0065 and 0.9998, 0.0060 and 0.9941, and 0.0032 and 0.9906, respectively. The result showed that using ensemble learning techniques in transmission modeling can significantly enhance service quality and meet customer service level agreements and ensemble method was successful in efficiently optimizing the signal to noise ratio, which in turn enhanced the QoS at the point of reception.
+        </div>
+        <div class="article-ai">
+            <p><strong>AI Confidence:</strong> 75%</p>
+            <div class="confidence-bar">
+                <div class="confidence-level" style="width: 75.0%">
+                </div>
+            </div>
+            <button class="toggle-justification" onclick="toggleJustification(this)">AI Justification</button>
+            <p class="ai-justification" style="display: none;"><strong>AI Justification:</strong> This paper is relevant to your research interests because it addresses the optimization of Quality of Service (QoS) in Free Space Optical (FSO) communication systems, highlighting the impact of atmospheric conditions, which directly aligns with your exploration of adaptive optics and wavefront sensing technologies. Additionally, the use of ensemble learning models for improving signal quality could impart valuable insights into enhancing wavefront shaping methodologies within your work.</p>
+        </div>
+    </div>
+        
+    <div class="article-section">
+        <div class="article-index" style="display: inline;">10.</div>
+        <div class="article-arxiv-id" style="display: inline;">2407.05783</div>
+        <div class="article-title"style="display: inline;">Wavefront shaping and imaging through a multimode hollow-core fiber</div>
+        <div class="article-meta">
+            <p><strong>Authors:</strong> Zhouping Lyu,Lyubov Amitonova</p>
+            <p><strong>Published Date:</strong> 08-07-2024</p>
+            <p><strong>Category:</strong> physics.optics</p>
+            <p><strong>Tags:</strong> #PCF</p>
+            <a href="http://arxiv.org/pdf/2407.05783v1" target="_blank" class="pdf-button">View PDF</a>
+            <a href="/link/2407.05783" class="link-button">Link</a>
+            
+
+            <!-- Drop Down Menu for processed -->
+            <select name="process_status" class="process-button" onchange="location.href='/process/2407.05783?status=' + this.value">
+                <option value="u" >Unprocessed</option>
+                <option value="r" selected>To Read</option>
+                <option value="R" >Read</option>
+                <option value="d" >To Download</option>
+                <option value="D" >Download</option>
+                <option value="-" >Not Relevant</option>
+            </select>
+
+        <!-- TO DO: Make Abstract and AI Justification Collapsable again -->
+        </div> 
+        <div class="article-abstract">
+            <strong>Abstract:</strong> Multimode fibers recently emerged as compact minimally-invasive probes for high-resolution deep-tissue imaging. However, the commonly used silica fibers have a relatively low numerical aperture (NA) limiting the spatial resolution of a probe. On top of that, light propagation within the solid core generates auto-fluorescence and Raman background, which interferes with imaging. Here we propose to use a hollow-core fiber to solve these problems. We experimentally demonstrate spatial wavefront shaping at the multimode hollow-core fiber output with tunable high-NA. We demonstrate raster-scan and speckle-based compressive imaging through a multimode hollow-core fiber.
+        </div>
+        <div class="article-ai">
+            <p><strong>AI Confidence:</strong> 70%</p>
+            <div class="confidence-bar">
+                <div class="confidence-level" style="width: 70.0%">
+                </div>
+            </div>
+            <button class="toggle-justification" onclick="toggleJustification(this)">AI Justification</button>
+            <p class="ai-justification" style="display: none;"><strong>AI Justification:</strong> This paper is relevant to your research on Adaptive Optics and wavefront shaping, as it discusses spatial wavefront shaping at the output of multimode hollow-core fibers, which can provide insights into improving optical communication systems. The focus on &#34;hollow-core fiber&#34; and &#34;wavefront shaping&#34; aligns well with your interest in hybrid technologies that bridge photonic telecommunications and adaptive optics in space applications.</p>
+        </div>
+    </div>
+        
+    <div class="article-section">
+        <div class="article-index" style="display: inline;">11.</div>
+        <div class="article-arxiv-id" style="display: inline;">2410.13801</div>
+        <div class="article-title"style="display: inline;">Enabling a multifunctional telecommunications fiber optic network... Ultrastable optical frequency transfer and attosecond timing in deployed multicore fiber</div>
+        <div class="article-meta">
+            <p><strong>Authors:</strong> Nazanin Hoghooghi,Mikael Mazur,Nicolas Fontaine,Yifan Liu,Dahyeon Lee,Charles McLemore,...</p>
+            <p><strong>Published Date:</strong> 17-10-2024</p>
+            <p><strong>Category:</strong> physics.optics</p>
+            <p><strong>Tags:</strong> #FSOC,#QuantumOptics</p>
+            <a href="http://arxiv.org/pdf/2410.13801v1" target="_blank" class="pdf-button">View PDF</a>
+            <a href="/link/2410.13801" class="link-button">Link</a>
+            
+
+            <!-- Drop Down Menu for processed -->
+            <select name="process_status" class="process-button" onchange="location.href='/process/2410.13801?status=' + this.value">
+                <option value="u" >Unprocessed</option>
+                <option value="r" selected>To Read</option>
+                <option value="R" >Read</option>
+                <option value="d" >To Download</option>
+                <option value="D" >Download</option>
+                <option value="-" >Not Relevant</option>
+            </select>
+
+        <!-- TO DO: Make Abstract and AI Justification Collapsable again -->
+        </div> 
+        <div class="article-abstract">
+            <strong>Abstract:</strong> The telecommunications industrys deployment of billions of kilometers of optical fiber has created a vast global network that can be exploited for additional applications such as environmental sensing, quantum networking and international clock comparisons. However, for reasons such as the unidirectionality of long-haul fiber links, telecom fiber networks cannot always be adapted for important applications beyond data transmission. Fortunately, new multicore optical fibers create the opportunity for application coexistence with data traffic, creating expansive multifunctional networks. Towards that end, we propose and demonstrate the faithful transfer of ultrastable optical signals through multicore fiber in a way that is compatible with the unidirectionality of long-haul fiber optic systems, demonstrating a fractional frequency instability of 3x10-19 at 10,000 seconds. This opens the door towards intercontinental optical clock comparisons, with applications in fundamental physics and the redefinition of the second.
+        </div>
+        <div class="article-ai">
+            <p><strong>AI Confidence:</strong> 65%</p>
+            <div class="confidence-bar">
+                <div class="confidence-level" style="width: 65.0%">
+                </div>
+            </div>
+            <button class="toggle-justification" onclick="toggleJustification(this)">AI Justification</button>
+            <p class="ai-justification" style="display: none;"><strong>AI Justification:</strong> The paper presents advancements in &#34;multicore optical fibers&#34; that enable &#34;faithful transfer of ultrastable optical signals,&#34; which may complement your interest in &#34;using fiber optic technology for wavefront sensing technology.&#34; While it does focus on telecommunications, the implications for &#34;multifunctional networks&#34; suggest potential applications relevant to &#34;Free Space Optical Communication&#34; and could inspire innovative approaches within your adaptive optics projects.</p>
+        </div>
+    </div>
+        
+    <div class="article-section">
+        <div class="article-index" style="display: inline;">12.</div>
+        <div class="article-arxiv-id" style="display: inline;">2410.06374</div>
+        <div class="article-title"style="display: inline;">Inverse Design of Photonic Crystal Waveguides Using Neural Networks and Dispersion Optimization</div>
+        <div class="article-meta">
+            <p><strong>Authors:</strong> Lucian Feng</p>
+            <p><strong>Published Date:</strong> 08-10-2024</p>
+            <p><strong>Category:</strong> physics.optics</p>
+            <p><strong>Tags:</strong> #PCF</p>
+            <a href="http://arxiv.org/pdf/2410.06374v1" target="_blank" class="pdf-button">View PDF</a>
+            <a href="/link/2410.06374" class="link-button">Link</a>
+            
+
+            <!-- Drop Down Menu for processed -->
+            <select name="process_status" class="process-button" onchange="location.href='/process/2410.06374?status=' + this.value">
+                <option value="u" >Unprocessed</option>
+                <option value="r" selected>To Read</option>
+                <option value="R" >Read</option>
+                <option value="d" >To Download</option>
+                <option value="D" >Download</option>
+                <option value="-" >Not Relevant</option>
+            </select>
+
+        <!-- TO DO: Make Abstract and AI Justification Collapsable again -->
+        </div> 
+        <div class="article-abstract">
+            <strong>Abstract:</strong> Photonic crystal waveguides (PCWs) play a critical role in precisely controlling light propagation, enabling high-performance functions in applications such as optical communication and integrated photonics. The design of PCWs traditionally relies on complex numerical methods, including finite-difference time-domain (FDTD) and plane-wave expansion (PWE) methods, which are often inefficient when dealing with high-dimensional parameter spaces, particularly for subwavelength structures. To overcome these challenges, a convolutional neural network (CNN)-based inverse design method is introduced to optimize the structural parameters of PCWs. By simulating band structures under varying line defect widths and air hole radii using MIT Photonic Bands (MPB), a large dataset was generated, mapping structural parameters to corresponding band characteristics. Backpropagation neural networks (BPNN) and CNN models were trained on this dataset to predict key PCW structural parameters. The CNN model demonstrated superior performance in predicting complex geometries, maintaining high accuracy even when extrapolating beyond the training dataset, with precision up to four decimal places. In contrast, the BPNN model exhibited faster training times and higher computational efficiency on smaller datasets, though it performed less effectively on larger datasets. Cross-validation using MPB confirmed the generalization capability and reliability of both models. This study highlights the potential of deep learning techniques in photonic device design, particularly for advancing the development of high-efficiency, low-loss components in integrated photonics and optical communication systems.
+        </div>
+        <div class="article-ai">
+            <p><strong>AI Confidence:</strong> 65%</p>
+            <div class="confidence-bar">
+                <div class="confidence-level" style="width: 65.0%">
+                </div>
+            </div>
+            <button class="toggle-justification" onclick="toggleJustification(this)">AI Justification</button>
+            <p class="ai-justification" style="display: none;"><strong>AI Justification:</strong> The paper is relevant to your research interests as it addresses the optimization of photonic crystal waveguides (PCWs), which could relate to your work on &#34;fiber optic technology for wavefront sensing&#34; and &#34;photonic telecommunication research.&#34; Additionally, the use of advanced methods like convolutional neural networks in the design process indicates a modern approach that may enhance your understanding of &#34;high-performance functions in applications such as optical communication.&#34;</p>
+        </div>
+    </div>
+        
+    <div class="article-section">
+        <div class="article-index" style="display: inline;">13.</div>
+        <div class="article-arxiv-id" style="display: inline;">2410.17471</div>
+        <div class="article-title"style="display: inline;">First Photon Machine Learning</div>
+        <div class="article-meta">
+            <p><strong>Authors:</strong> Lili Li,Santosh Kumar,Malvika Garikapati,Yu-Ping Huang</p>
+            <p><strong>Published Date:</strong> 22-10-2024</p>
+            <p><strong>Category:</strong> quant-ph</p>
+            <p><strong>Tags:</strong> #QuantumOptics</p>
+            <a href="http://arxiv.org/pdf/2410.17471v1" target="_blank" class="pdf-button">View PDF</a>
+            <a href="/link/2410.17471" class="link-button">Link</a>
+            
+
+            <!-- Drop Down Menu for processed -->
+            <select name="process_status" class="process-button" onchange="location.href='/process/2410.17471?status=' + this.value">
+                <option value="u" >Unprocessed</option>
+                <option value="r" selected>To Read</option>
+                <option value="R" >Read</option>
+                <option value="d" >To Download</option>
+                <option value="D" >Download</option>
+                <option value="-" >Not Relevant</option>
+            </select>
+
+        <!-- TO DO: Make Abstract and AI Justification Collapsable again -->
+        </div> 
+        <div class="article-abstract">
+            <strong>Abstract:</strong> Quantum techniques are expected to revolutionize how information is acquired, exchanged, and processed. Yet it has been a challenge to realize and measure their values in practical settings. We present first photon machine learning as a new paradigm of neural networks and establish the first unambiguous advantage of quantum effects for artificial intelligence. By extending the physics behind the double-slit experiment for quantum particles to a many-slit version, our experiment finds that a single photon can perform image recognition at around $30\%$ fidelity, which beats by a large margin the theoretical limit of what a similar classical system can possibly achieve (about 24\%). In this experiment, the entire neural network is implemented in sub-attojoule optics and the equivalent per-calculation energy cost is below $10^{-24}$ joule, highlighting the prospects of quantum optical machine learning for unparalleled advantages in speed, capacity, and energy efficiency.
+        </div>
+        <div class="article-ai">
+            <p><strong>AI Confidence:</strong> 60%</p>
+            <div class="confidence-bar">
+                <div class="confidence-level" style="width: 60.0%">
+                </div>
+            </div>
+            <button class="toggle-justification" onclick="toggleJustification(this)">AI Justification</button>
+            <p class="ai-justification" style="display: none;"><strong>AI Justification:</strong> The paper is somewhat relevant to your interests as it discusses &#34;quantum optical machine learning,&#34; which involves advanced optical techniques that could intersect with your focus on &#34;Free Space Optical Communication&#34; and &#34;Adaptive Optics.&#34; However, it lacks direct mention of key terms such as &#34;wavefront sensors&#34; or &#34;fiber optic technology,&#34; which are crucial components of your specific research within photonic telecommunication and astrophotonics.</p>
+        </div>
+    </div>
+        
+    <div class="article-section">
+        <div class="article-index" style="display: inline;">14.</div>
+        <div class="article-arxiv-id" style="display: inline;">2411.00473</div>
+        <div class="article-title"style="display: inline;">Synergistic Interplay of Large Language Model and Digital Twin for Autonomous Optical Networks... Field Demonstrations</div>
+        <div class="article-meta">
+            <p><strong>Authors:</strong> Yuchen Song,Yao Zhang,Anni Zhou,Yan Shi,Shikui Shen,Xiongyan Tang,...</p>
+            <p><strong>Published Date:</strong> 01-11-2024</p>
+            <p><strong>Category:</strong> cs.NI</p>
+            <p><strong>Tags:</strong> #FSOC</p>
+            <a href="http://arxiv.org/pdf/2411.00473v1" target="_blank" class="pdf-button">View PDF</a>
+            <a href="/link/2411.00473" class="link-button">Link</a>
+            
+
+            <!-- Drop Down Menu for processed -->
+            <select name="process_status" class="process-button" onchange="location.href='/process/2411.00473?status=' + this.value">
+                <option value="u" >Unprocessed</option>
+                <option value="r" selected>To Read</option>
+                <option value="R" >Read</option>
+                <option value="d" >To Download</option>
+                <option value="D" >Download</option>
+                <option value="-" >Not Relevant</option>
+            </select>
+
+        <!-- TO DO: Make Abstract and AI Justification Collapsable again -->
+        </div> 
+        <div class="article-abstract">
+            <strong>Abstract:</strong> The development of large language models (LLM) has revolutionized various fields and is anticipated to drive the advancement of autonomous systems. In the context of autonomous optical networks, creating a high-level cognitive agent in the control layer remains a challenge. However, LLM is primarily developed for natural language processing tasks, rendering them less effective in predicting the physical dynamics of optical communications. Moreover, optical networks demand rigorous stability, where direct deployment of strategies generated from LLM poses safety concerns. In this paper, a digital twin (DT)-enhanced LLM scheme is proposed to facilitate autonomous optical networks. By leveraging monitoring data and advanced models, the DT of optical networks can accurately characterize their physical dynamics, furnishing LLMs with dynamic-updated information for reliable decision-making. Prior to deployment, the generated strategies from LLM can be pre-verified in the DT platform, which also provides feedback to the LLM for further refinement of strategies. The synergistic interplay between DT and LLM for autonomous optical networks is demonstrated through three scenarios... performance optimization under dynamic loadings in an experimental C+L-band long-haul transmission link, protection switching for device upgrading in a field-deployed six-node mesh network, and performance recovery after fiber cuts in a field-deployed C+L-band transmission link.
+        </div>
+        <div class="article-ai">
+            <p><strong>AI Confidence:</strong> 60%</p>
+            <div class="confidence-bar">
+                <div class="confidence-level" style="width: 60.0%">
+                </div>
+            </div>
+            <button class="toggle-justification" onclick="toggleJustification(this)">AI Justification</button>
+            <p class="ai-justification" style="display: none;"><strong>AI Justification:</strong> The paper&#39;s focus on &#34;autonomous optical networks&#34; and performance optimization in &#34;C+L-band long-haul transmission&#34; could provide insights relevant to my work on Free Space Optical Communication technologies, particularly as it pertains to stability and control within these systems. However, it primarily addresses advancements in LLM and digital twins rather than the adaptive optics and wavefront sensing technologies that I specifically seek, indicating a partial alignment with my research interests.</p>
+        </div>
+    </div>
+        
+    <div class="article-section">
+        <div class="article-index" style="display: inline;">15.</div>
+        <div class="article-arxiv-id" style="display: inline;">2410.14192</div>
+        <div class="article-title"style="display: inline;">Optimizing the image projection of spatially incoherent light from a multimode fiber</div>
+        <div class="article-meta">
+            <p><strong>Authors:</strong> Ken Deng,Zhongchi Zhang,Huaichuan Wang,Zihan Zhao,Jiazhong Hu</p>
+            <p><strong>Published Date:</strong> 18-10-2024</p>
+            <p><strong>Category:</strong> physics.optics</p>
+            <p><strong>Tags:</strong> #FSOC</p>
+            <a href="http://arxiv.org/pdf/2410.14192v2" target="_blank" class="pdf-button">View PDF</a>
+            <a href="/link/2410.14192" class="link-button">Link</a>
+            
+
+            <!-- Drop Down Menu for processed -->
+            <select name="process_status" class="process-button" onchange="location.href='/process/2410.14192?status=' + this.value">
+                <option value="u" >Unprocessed</option>
+                <option value="r" selected>To Read</option>
+                <option value="R" >Read</option>
+                <option value="d" >To Download</option>
+                <option value="D" >Download</option>
+                <option value="-" >Not Relevant</option>
+            </select>
+
+        <!-- TO DO: Make Abstract and AI Justification Collapsable again -->
+        </div> 
+        <div class="article-abstract">
+            <strong>Abstract:</strong> We study the spatially incoherent light generated by a multimode fiber(MMF) in the application of image projection designed for the ultracold-atom experiments. Inspired by previous half-analytic methods concerning the incoherent light, here a full-numerical model is established to provide more quantitative descriptions, and part of results is compared with experiments. Particularly, our model about the MMF is also compatible with light propagation in free space. Based on this, we study both the intrinsic speckle and the perturbation robustness of a MMF light field, under the influence of light propagation and fiber parameters. We point out several guidelines about choosing the suitable MMF in creating a spatially incoherent light source, which is useful in the context of the ultracold-atom experiments associating with the optical potential projection.
+        </div>
+        <div class="article-ai">
+            <p><strong>AI Confidence:</strong> 55%</p>
+            <div class="confidence-bar">
+                <div class="confidence-level" style="width: 55.0%">
+                </div>
+            </div>
+            <button class="toggle-justification" onclick="toggleJustification(this)">AI Justification</button>
+            <p class="ai-justification" style="display: none;"><strong>AI Justification:</strong> This paper presents a study on multimode fibers (MMFs) and their capabilities in generating spatially incoherent light, which connects with your focus on &#34;fiber optic technology&#34; for wavefront sensing. The reference to &#34;light propagation&#34; and compatibility with &#34;free space&#34; might provide insights into aspects relevant to your research on Free Space Optical Communication and Adaptive Optics.</p>
+        </div>
+    </div>
+        
+    <div class="article-section">
+        <div class="article-index" style="display: inline;">16.</div>
+        <div class="article-arxiv-id" style="display: inline;">2411.02056</div>
+        <div class="article-title"style="display: inline;">Development of a photonic crystal spectrometer for greenhouse gas measurements</div>
+        <div class="article-meta">
+            <p><strong>Authors:</strong> Marijn Siemonsa,Martijn Veen,Irina Malysheva,Johannes Algera,Stefan Philippi,Kirill Antonov,...</p>
+            <p><strong>Published Date:</strong> 04-11-2024</p>
+            <p><strong>Category:</strong> physics.optics</p>
+            <p><strong>Tags:</strong> #PCF</p>
+            <a href="http://arxiv.org/pdf/2411.02056v1" target="_blank" class="pdf-button">View PDF</a>
+            <a href="/link/2411.02056" class="link-button">Link</a>
+            
+
+            <!-- Drop Down Menu for processed -->
+            <select name="process_status" class="process-button" onchange="location.href='/process/2411.02056?status=' + this.value">
+                <option value="u" >Unprocessed</option>
+                <option value="r" selected>To Read</option>
+                <option value="R" >Read</option>
+                <option value="d" >To Download</option>
+                <option value="D" >Download</option>
+                <option value="-" >Not Relevant</option>
+            </select>
+
+        <!-- TO DO: Make Abstract and AI Justification Collapsable again -->
+        </div> 
+        <div class="article-abstract">
+            <strong>Abstract:</strong> The need of atmospheric information with a higher spatial and temporal resolution drives the development of small satellites and satellite constellations to complement satellite flagship missions. Since optical systems are a main contributor to the satellite size, these are the prime candidate for their miniaturization. We present here a novel optical system where the complete spectrometer part of the optical system is compressed in one flat optical element. The element consists of an array of photonic crystals which is directly placed on a detector. The photonic crystals act as optical filters with a tunable spectral transmission response. From the integrated optical signals per filter and the atmosphere model, greenhouse gas concentrations are obtained using computational inversion. We present in this article the instrument concept, the manufacturing and measurement of the photonic crystals, methods for the filter array optimization, and discuss the predicted retrieval performance for the detection of methane and carbon dioxide.
+        </div>
+        <div class="article-ai">
+            <p><strong>AI Confidence:</strong> 55%</p>
+            <div class="confidence-bar">
+                <div class="confidence-level" style="width: 55.0%">
+                </div>
+            </div>
+            <button class="toggle-justification" onclick="toggleJustification(this)">AI Justification</button>
+            <p class="ai-justification" style="display: none;"><strong>AI Justification:</strong> This paper is somewhat relevant to your research interests since it discusses &#34;small satellites and satellite constellations&#34; which relate to space applications in Free Space Optical Communication. However, while it involves advanced optical systems and photonic technologies, it primarily focuses on spectrometry for greenhouse gas measurements rather than Adaptive Optics or wavefront sensing technologies specifically, which are central to your work.</p>
+        </div>
+    </div>
+        
+    <div class="article-section">
+        <div class="article-index" style="display: inline;">17.</div>
+        <div class="article-arxiv-id" style="display: inline;">2410.17239</div>
+        <div class="article-title"style="display: inline;">Synthetic Quantum Holography with Undetected Light</div>
+        <div class="article-meta">
+            <p><strong>Authors:</strong> Sebastian Topfer,Sergio Tovar,Josue R. Leon Torres,Daniel Derr,Enno Giese,Jorge Fuenzalida,...</p>
+            <p><strong>Published Date:</strong> 22-10-2024</p>
+            <p><strong>Category:</strong> physics.optics</p>
+            <p><strong>Tags:</strong> #QuantumOptics</p>
+            <a href="http://arxiv.org/pdf/2410.17239v1" target="_blank" class="pdf-button">View PDF</a>
+            <a href="/link/2410.17239" class="link-button">Link</a>
+            
+
+            <!-- Drop Down Menu for processed -->
+            <select name="process_status" class="process-button" onchange="location.href='/process/2410.17239?status=' + this.value">
+                <option value="u" >Unprocessed</option>
+                <option value="r" selected>To Read</option>
+                <option value="R" >Read</option>
+                <option value="d" >To Download</option>
+                <option value="D" >Download</option>
+                <option value="-" >Not Relevant</option>
+            </select>
+
+        <!-- TO DO: Make Abstract and AI Justification Collapsable again -->
+        </div> 
+        <div class="article-abstract">
+            <strong>Abstract:</strong> Utilizing nonlinear interferometers for sensing with undetected light enables new sensing and imaging techniques in spectral ranges that are difficult to detect. To enhance this method for future applications, it is advantageous to extract both amplitude and phase information of an object. This study introduces two approaches for synthetic quantum holography with undetected light, which allows for obtaining an objects amplitude and phase information in a nonlinear interferometer by capturing only a single image. One method is based on quasi-phase-shifting holography using superpixel structures displayed on a spatial light modulator. The other method relies on synthetic off-axis holography implemented through a linear phase gradient on a spatial light modulator. Both approaches are experimentally analyzed for applicability and compared against available multi-acquisition methods.
+        </div>
+        <div class="article-ai">
+            <p><strong>AI Confidence:</strong> 50%</p>
+            <div class="confidence-bar">
+                <div class="confidence-level" style="width: 50.0%">
+                </div>
+            </div>
+            <button class="toggle-justification" onclick="toggleJustification(this)">AI Justification</button>
+            <p class="ai-justification" style="display: none;"><strong>AI Justification:</strong> The paper presents methods related to **sensing** and **imaging techniques**, which could provide valuable insights into **wavefront shaping** and **adaptive optics** within your research focus on Free Space Optical Communication. While it does discuss innovative technologies like spatial light modulators that could align with your interest in fiber optic technology for **wavefront sensing**, it does not specifically target optical communication with satellites or spacecraft, which limits its overall relevance to your work.</p>
+        </div>
+    </div>
+        
+    <div class="article-section">
+        <div class="article-index" style="display: inline;">18.</div>
+        <div class="article-arxiv-id" style="display: inline;">2411.01513</div>
+        <div class="article-title"style="display: inline;">Ultra-broadband UV/VIS spectroscopy enabled by resonant dispersive wave emission of a frequency comb</div>
+        <div class="article-meta">
+            <p><strong>Authors:</strong> Adrian Kirchner,Alexander Eber,Lukas Furst,Emily Hruska,Michael H. Frosz,Francesco Tani,...</p>
+            <p><strong>Published Date:</strong> 03-11-2024</p>
+            <p><strong>Category:</strong> physics.optics</p>
+            <p><strong>Tags:</strong> #PCF</p>
+            <a href="http://arxiv.org/pdf/2411.01513v1" target="_blank" class="pdf-button">View PDF</a>
+            <a href="/link/2411.01513" class="link-button">Link</a>
+            
+
+            <!-- Drop Down Menu for processed -->
+            <select name="process_status" class="process-button" onchange="location.href='/process/2411.01513?status=' + this.value">
+                <option value="u" >Unprocessed</option>
+                <option value="r" selected>To Read</option>
+                <option value="R" >Read</option>
+                <option value="d" >To Download</option>
+                <option value="D" >Download</option>
+                <option value="-" >Not Relevant</option>
+            </select>
+
+        <!-- TO DO: Make Abstract and AI Justification Collapsable again -->
+        </div> 
+        <div class="article-abstract">
+            <strong>Abstract:</strong> We introduce a novel ultra-broadband ultraviolet and visible frequency comb light source covering more than 240 THz by resonant dispersive wave emission in a gas-filled hollow-core fiber waveguide. The light source allows tuning from ~340 nm to 465 nm (645 THz to ~885 THz) with conversion efficiencies of 1.5 %. Ultra-broadband absorption spectroscopy is demonstrated by studying nitrogen dioxide, a molecular species of major atmospheric relevance strongly absorbing across the ultraviolet and visible spectral region. We show that the coherence of the 80 MHz ytterbium fiber-based frequency comb seeding the frequency up-conversion process is conserved, paving the way toward further ultra-broadband (dual) comb spectroscopy across the ultraviolet/visible range.
+        </div>
+        <div class="article-ai">
+            <p><strong>AI Confidence:</strong> 50%</p>
+            <div class="confidence-bar">
+                <div class="confidence-level" style="width: 50.0%">
+                </div>
+            </div>
+            <button class="toggle-justification" onclick="toggleJustification(this)">AI Justification</button>
+            <p class="ai-justification" style="display: none;"><strong>AI Justification:</strong> The paper presents advancements in &#34;ultra-broadband ultraviolet and visible frequency comb light source,&#34; which, while focused more on spectroscopy rather than direct optical communication, involves the use of &#34;fiber waveguide&#34; technology that could have implications for optical communication systems, particularly in the context of &#34;wavefront shaping.&#34; However, the primary emphasis on spectroscopy and atmospheric absorption does not align closely with your main interest in &#34;Adaptive Optics enabled optical communication&#34; for space applications.</p>
+        </div>
+    </div>
+        
+    <div class="article-section">
+        <div class="article-index" style="display: inline;">19.</div>
+        <div class="article-arxiv-id" style="display: inline;">2410.17048</div>
+        <div class="article-title"style="display: inline;">Security Enhancement of Quantum Communication in Space-Air-Ground Integrated Networks</div>
+        <div class="article-meta">
+            <p><strong>Authors:</strong> Yixiao Zhang,Wei Liang,Lixin Li,Wensheng Lin</p>
+            <p><strong>Published Date:</strong> 22-10-2024</p>
+            <p><strong>Category:</strong> quant-ph</p>
+            <p><strong>Tags:</strong> #QuantumOptics</p>
+            <a href="http://arxiv.org/pdf/2410.17048v1" target="_blank" class="pdf-button">View PDF</a>
+            <a href="/link/2410.17048" class="link-button">Link</a>
+            
+
+            <!-- Drop Down Menu for processed -->
+            <select name="process_status" class="process-button" onchange="location.href='/process/2410.17048?status=' + this.value">
+                <option value="u" >Unprocessed</option>
+                <option value="r" selected>To Read</option>
+                <option value="R" >Read</option>
+                <option value="d" >To Download</option>
+                <option value="D" >Download</option>
+                <option value="-" >Not Relevant</option>
+            </select>
+
+        <!-- TO DO: Make Abstract and AI Justification Collapsable again -->
+        </div> 
+        <div class="article-abstract">
+            <strong>Abstract:</strong> This paper investigates a transmission scheme for enhancing quantum communication security, aimed at improving the security of space-air-ground integrated networks (SAGIN). Quantum teleportation achieves the transmission of quantum states through quantum channels. In simple terms, an unknown quantum state at one location can be reconstructed on a particle at another location. By combining classical Turbo coding with quantum Shor error-correcting codes, we propose a practical solution that ensures secure information transmission even in the presence of errors in both classical and quantum channels. To provide absolute security under SAGIN, we add a quantum secure direct communication (QSDC) protocol to the current system. Specifically, by accounting for the practical scenario of eavesdropping in quantum channels, the QSDC protocol utilizes virtual entangled pairs to detect the presence of eavesdroppers. Consequently, the overall scheme guarantees both the reliability and absolute security of communication.
+        </div>
+        <div class="article-ai">
+            <p><strong>AI Confidence:</strong> 35%</p>
+            <div class="confidence-bar">
+                <div class="confidence-level" style="width: 35.0%">
+                </div>
+            </div>
+            <button class="toggle-justification" onclick="toggleJustification(this)">AI Justification</button>
+            <p class="ai-justification" style="display: none;"><strong>AI Justification:</strong> The paper discusses &#34;quantum communication security,&#34; which is somewhat related to advanced communication technologies but diverges from my primary research focus on &#34;Free Space Optical Communication&#34; and &#34;Adaptive Optics.&#34; While the combination of quantum coding and security protocols is intriguing, it lacks direct relevance to my interests in &#34;wavefront sensing technology&#34; and &#34;fiber optic technology.&#34;</p>
+        </div>
+    </div>
+        
+    <div class="article-section">
+        <div class="article-index" style="display: inline;">20.</div>
+        <div class="article-arxiv-id" style="display: inline;">2410.22627</div>
+        <div class="article-title"style="display: inline;">Fast and reliable atom transport by optical tweezers</div>
+        <div class="article-meta">
+            <p><strong>Authors:</strong> Sunhwa Hwang,Hansub Hwang,Kangjin Kim,Andrew Byun,Seokho Jeong,Maynardo Pratama Soegianto,...</p>
+            <p><strong>Published Date:</strong> 30-10-2024</p>
+            <p><strong>Category:</strong> quant-ph</p>
+            <p><strong>Tags:</strong> #QuantumOptics</p>
+            <a href="http://arxiv.org/pdf/2410.22627v1" target="_blank" class="pdf-button">View PDF</a>
+            <a href="/link/2410.22627" class="link-button">Link</a>
+            
+
+            <!-- Drop Down Menu for processed -->
+            <select name="process_status" class="process-button" onchange="location.href='/process/2410.22627?status=' + this.value">
+                <option value="u" >Unprocessed</option>
+                <option value="r" selected>To Read</option>
+                <option value="R" >Read</option>
+                <option value="d" >To Download</option>
+                <option value="D" >Download</option>
+                <option value="-" >Not Relevant</option>
+            </select>
+
+        <!-- TO DO: Make Abstract and AI Justification Collapsable again -->
+        </div> 
+        <div class="article-abstract">
+            <strong>Abstract:</strong> Movable single atoms have drawn significant attention for their potentials as flying quantum memory in non-local, dynamic quantum computing architectures. However, when dynamic optical tweezers are employed to control atoms opto-mechanically, conventional methods such as adiabatic controls and constant jerk controls are either inherently slow or induce mechanical heating, leading to atom loss over long distances or at high speeds. To address these challenges, we explore the method known as shortcuts to adiabaticity (STA) as an efficient alternative for fast and reliable atom transport control. We present a series of proof-of-concept experiments demonstrating that STA-based optical tweezer trajectories can achieve both rapid and reliable single-atom transport. These experiments include moving atoms between two locations, adjusting speeds en route, and navigating curved trajectories. Our results indicate that atoms can be transported with a constant acceleration on average over distances that is only limited by trap lifetime, while effectively suppressing vibrational heating. This makes STA methods particularly well-suited for long-distance atom transport, potentially spanning distances over centimeter scales, such as between quantum information devices.
+        </div>
+        <div class="article-ai">
+            <p><strong>AI Confidence:</strong> 25%</p>
+            <div class="confidence-bar">
+                <div class="confidence-level" style="width: 25.0%">
+                </div>
+            </div>
+            <button class="toggle-justification" onclick="toggleJustification(this)">AI Justification</button>
+            <p class="ai-justification" style="display: none;"><strong>AI Justification:</strong> The paper&#39;s focus on &#34;fast and reliable atom transport by optical tweezers,&#34; while technologically advanced in atomic manipulation, does not align closely with your specific research interests in &#34;Free Space Optical Communication technologies&#34; or &#34;Adaptive Optics enabled optical communication.&#34; Although it discusses optical methods, it centers on atomic transport rather than optical communications with satellites and spacecraft, resulting in minimal relevance to wavefront sensing or shaping technologies.</p>
+        </div>
+    </div>
+        
+    <div class="article-section">
+        <div class="article-index" style="display: inline;">21.</div>
+        <div class="article-arxiv-id" style="display: inline;">2410.08585</div>
+        <div class="article-title"style="display: inline;">Blind and robust reconstruction of adaptive optics point spread functions for asteroid deconvolution and moon detection</div>
+        <div class="article-meta">
+            <p><strong>Authors:</strong> Anthony Berdeu,Ferreol Soulez,Kate Minker,Benoit Carry,Guillaume Bourdarot,Antoine Kaszczyc,...</p>
+            <p><strong>Published Date:</strong> 11-10-2024</p>
+            <p><strong>Category:</strong> eess.SP</p>
+            <p><strong>Tags:</strong> #FSOC</p>
+            <a href="http://arxiv.org/pdf/2410.08585v1" target="_blank" class="pdf-button">View PDF</a>
+            <a href="/link/2410.08585" class="link-button">Link</a>
+            
+
+            <!-- Drop Down Menu for processed -->
+            <select name="process_status" class="process-button" onchange="location.href='/process/2410.08585?status=' + this.value">
+                <option value="u" >Unprocessed</option>
+                <option value="r" selected>To Read</option>
+                <option value="R" >Read</option>
+                <option value="d" >To Download</option>
+                <option value="D" >Download</option>
+                <option value="-" >Not Relevant</option>
+            </select>
+
+        <!-- TO DO: Make Abstract and AI Justification Collapsable again -->
+        </div> 
+        <div class="article-abstract">
+            <strong>Abstract:</strong> Initially designed to detect and characterize exoplanets, extreme adaptive optics systems (AO) open a new window on the solar system by resolving its small bodies. Nonetheless, despite the always increasing performances of AO systems, the correction is not perfect, degrading their image and producing a bright halo that can hide faint and close moons. Using a reference point spread function (PSF) is not always sufficient due to the random nature of the turbulence. In this work, we present our method to overcome this limitation. It blindly reconstructs the AO-PSF directly in the data of interest, without any prior on the instrument nor the asteroids shape. This is done by first estimating the PSF core parameters under the assumption of a sharp-edge and flat object, allowing the image of the main body to be deconvolved. Then, the PSF faint extensions are reconstructed with a robust penalization optimization, discarding outliers on-the-fly such as cosmic rays, defective pixels and moons. This allows to properly model and remove the asteroids halo. Finally, moons can be detected in the residuals, using the reconstructed PSF and the knowledge of the outliers learned with the robust method. We show that our method can be easily applied to different instruments (VLT/SPHERE, Keck/NIRC2), efficiently retrieving the features of AO-PSFs. Compared with state-of-the-art moon enhancement algorithms, moon signal is greatly improved and our robust detection method manages to discriminate faint moons from outliers.
+        </div>
+        <div class="article-ai">
+            <p><strong>AI Confidence:</strong> N/A</p>
+            <div class="confidence-bar">
+                <div class="confidence-level" style="width: 0%">
+                </div>
+            </div>
+            <button class="toggle-justification" onclick="toggleJustification(this)">AI Justification</button>
+            <p class="ai-justification" style="display: none;"><strong>AI Justification:</strong> N/A</p>
+        </div>
+    </div>
+        
+            </tbody>
+        </table>
+    </body>
+</html>
+

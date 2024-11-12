@@ -3,22 +3,19 @@ title: ChiScraper
 layout: default.liquid
 ---
 
+# Local AI Ranking
 
-# Quickstart
+## Quickstart
 
 1. Install [Ollama](https://ollama.com/)
 2. Pull Llama3.1 8b from the [Ollama Model Repository](https://ollama.com/library)
+
 ```bash
 ollama pull llama3.18b
 ```
-3. Edit `host` and `ai_model` in the config
 
-```yaml
-host: local
-ai_model: llama3.1:8b
-```
+3. Follow the instructions on [AI Ranking](/aiRanking.html)
 
-**Detailed instructions and configuration below**
 
 # Intructions for AI Evalutation
 To use the AI-LLM capabilities, you will need to install some an external program called "Ollama". This is a piece of middleware that lets you host LLMs locally.
@@ -48,10 +45,3 @@ I reccomend Llama3 8b because it balences system requirements with performance. 
 
 See the avaliable models at the [Ollama Model Repository](https://ollama.com/library)
 
-# Configuring Chi-Scraper
-Within `config.yaml` set the host to `local` and the `ai_model` to whichever model you have downloaded and plan on using. 
-
-```yaml
-host: local
-ai_model: llama3.1:8b
-```

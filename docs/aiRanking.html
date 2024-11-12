@@ -82,16 +82,20 @@
 <ol>
 <li>Run off OpenAI</li>
 <li>Run the AI locally.</li>
+<li>Run off any OpenAI endpoint.</li>
 </ol>
-<p>Running the reccomendation algorithm on OpenAIs servers and with their models is faster, but you will need to generate an API key and load your account with some credit. Running it locally is easy, but time consuming.</p>
+<p>Running the reccomendation algorithm on OpenAIs servers and with their models is faster, but you will need to generate an API key and load your account with some credit. Running it locally is very easy, but will take longer.</p>
 <h1>OpenAI Quickstart</h1>
 <ol>
 <li>Create an account with OpenAI and generate an API key</li>
 <li>Save the API key as a Environment Variable <code>OPENAI_API_KEY</code> to your system</li>
-<li>Verify the config</li>
+<li>Edit <code>configs/RankingParams.json</code> to the following:</li>
 </ol>
-<pre><code class="language-yaml">host: OpenAI
-ai_model: gpt-4o-mini
+<pre><code class="language-json">{
+  &quot;source_url&quot;: &quot;https://api.openai.com/v1&quot;,
+  &quot;model&quot;: &quot;gpt-4o-mini&quot;,
+  &quot;API_SYS_ENV&quot;: &quot;OPEN_API_KEY&quot;,
+}
 </code></pre>
 <h1>Ollama Quickstart</h1>
 <ol>
@@ -101,11 +105,20 @@ ai_model: gpt-4o-mini
 <pre><code class="language-bash">ollama pull llama3.1:8b
 </code></pre>
 <ol start="3">
-<li>Edit <code>host</code> and <code>ai_model</code> in the config</li>
+<li>Edit <code>configs/RankingParams.json</code> to the following:</li>
 </ol>
-<pre><code class="language-yaml">host: local
-ai_model: llama3.1:8b
+<pre><code class="language-json">{
+  &quot;source_url&quot;: &quot;http://127.0.0.1:11434/v1&quot;,
+  &quot;model&quot;: &quot;llama3.1:8b&quot;,
+  &quot;API_KEY&quot;: &quot;Ollama&quot;
+}
 </code></pre>
+<h1>Using another endpoint.</h1>
+<p>Like the other options, you will need to</p>
+<ol>
+<li>Generate an API key for your service.</li>
+<li>Edit <code>configs/RankingParams.json</code> to use your source url, model, and API key.</li>
+</ol>
 
 </main>
 

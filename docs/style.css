@@ -60,6 +60,22 @@ a:focus {
   text-decoration: none;
 }
 
+/* CONTENT IMAGES */
+.image {
+  display: block;
+  width: 100%; /* Changed from auto to 100% */
+  height: auto;
+  max-width: 100%;
+  border: 5px solid black; /* Added black frame with 5px linewidth */
+}
+
+main img { /* Added new rule for all images in main content */
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 5px solid black; /* Added black frame with 5px linewidth */
+}
+
 /* -------------------------------------------------------- */
 /* LAYOUT */
 

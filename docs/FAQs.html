@@ -77,7 +77,49 @@
 </aside>
 
 <main id="content">
-    <p>Under Construction</p>
+    <h1>Frequently Asked Questions</h1>
+<h2>General Questions</h2>
+<h3>What is ChiScraper?</h3>
+<p>ChiScraper is a tool that helps filter and rank ArXiv papers using a combination of keyword filtering and AI-powered ranking to help you find the most relevant research papers.</p>
+<h3>Is ChiScraper free to use?</h3>
+<p>Yes! ChiScraper is completely free and open source. However, if you choose to use OpenAI's models for ranking, you'll need to pay for API usage.</p>
+<h2>Installation &amp; Setup</h2>
+<h3>What are the system requirements?</h3>
+<p>ChiScraper runs on Python and can be installed on Linux, MacOS, or Windows. The basic installation requires minimal resources, but if you're running AI models locally, you'll need more substantial computing power.</p>
+<h3>How do I install ChiScraper?</h3>
+<p>Simply clone the repository and install the requirements:</p>
+<pre><code class="language-bash">git pull https://github.com/ChiScraper/ChiScraper.git
+pip install -r requirements
+</code></pre>
+<h2>Usage</h2>
+<h3>How often should I run ChiScraper?</h3>
+<p>Most users run it daily using a cron job. The recommended approach is to search and rank papers before starting your day.</p>
+<h3>Can I search for specific authors?</h3>
+<p>Yes! You can include specific authors in your search configuration file using the <code>list_authors</code> parameter.</p>
+<h3>How far back can I search?</h3>
+<p>You can specify any number of days to look back using the <code>-lb</code> parameter. For example, <code>-lb 14</code> will search the last 14 days.</p>
+<h2>AI Ranking</h2>
+<h3>Do I need to use AI ranking?</h3>
+<p>No, you can use ChiScraper without the AI ranking feature. However, the ranking helps prioritize the most relevant papers.</p>
+<h3>Which AI model should I use?</h3>
+<p>The first choice, is whether to run locally or remotely.</p>
+<p>Running it remotely will cost money, but provide faster and (arguably) more accurate reccomendations. The default configuration uses OpenAI's GPT-4o-mini. To use this you will need to get yourself an OpenAI API Key and Save it to your system Environment Variables.</p>
+<p>For local usage, we recommend Llama3-8b as it provides a good balance between performance and system requirements. Qwen2.5-7b also seems to work very well.</p>
+<h3>Can I run the AI locally?</h3>
+<p>Yes! You can use Ollama to run models locally. This is free but slower than using OpenAI's API.</p>
+<h3>Can I use other AI Models like Claude?</h3>
+<p>YES! The program should work with any OpenAI compatible endpoint. Just replace the url in the config with the url of the desired API. Consider using OpenRouter to trial different models if you are curious.</p>
+<h2>Configuration</h2>
+<h3>How specific should my keyword filters be?</h3>
+<p>We recommend using broader filters and letting the AI ranking system handle the fine-tuning. This ensures you don't miss relevant papers while still maintaining quality results.</p>
+<h3>Can I have multiple search configurations?</h3>
+<p>Yes! You can create multiple JSON configuration files for different research interests and use them with the <code>-c</code> parameter.</p>
+<h3>How do I view the results?</h3>
+<p>You can either:</p>
+<ol>
+<li>Browse the generated markdown files in your favorite markdown editor (e.g., Obsidian)</li>
+<li>Use the built-in web interface by running <code>python ./main -w</code></li>
+</ol>
 
 </main>
 

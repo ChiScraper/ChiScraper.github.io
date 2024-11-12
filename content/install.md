@@ -4,14 +4,23 @@ layout: default.liquid
 ---
 
 
-## How To Install
+# Install Instructions
 
-For detailed install instructions, go to the guide on the side bar. For quick-start. 
+## Quick Install
+
+Simply navigate to the folder you wish to run the application from and run the collowing commands
 
 ```bash
 
 git pull https://github.com/ChiScraper/ChiScraper.git
 pip install -r requirements
-python ./ChiScraper
 
+```
+
+#### Test
+
+To verify install success, run
+
+```
+python ./main.py -h
 ```

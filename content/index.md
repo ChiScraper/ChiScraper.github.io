@@ -5,6 +5,9 @@ layout: default.liquid
 
 # Chi-Scraper
 
+![Banner image of a woman drinking a coffee and browsing on her laptop.](Assets/Banner.jpg)
+
+
 This tool helps you turn the firehose of content from the ArXiv into a pleasent trickle you can take a sip from every day.
 
 Put simply, it is a powerful filtering system, combined with a LLM powered ranking algorithm. This means you only see what is relevant to you, and what is most relevant first. 
@@ -32,6 +35,11 @@ While you can browse the generated markdown files in your favourite markdown edi
 python ./main -w
 ```
 
+
+![Screenshot of the UI. There is a blue header with fields for "Sort", "Filter" and "Show Only", and a settings button. Below is a list of of ArXiv articles in a numbered list with ranked by relevance.](Assets/webAppUI.png)
+
+See an example output [here](./ArXivRoundUpExample.html). (**Note**: the filter, sort, show and settings functionality won't work on the online example.)
+
 ### Do it all!
 You can combine the flags to do all three. 
 
@@ -57,9 +65,6 @@ python ./ChiScraper
 
 ```
 
-
-
-## How to use
 
 # Credits
 - [Neco Kriel](https://astrokriel.github.io/) 
