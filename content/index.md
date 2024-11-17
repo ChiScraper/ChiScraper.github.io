@@ -5,12 +5,12 @@ layout: default.liquid
 
 # Chi-Scraper
 
-![Banner image of a woman drinking a coffee and browsing on her laptop.](Assets/Banner.jpg)
-
-
-This tool helps you turn the firehose of content from the ArXiv into a pleasent trickle you can take a sip from every day.
+This tool enables you to take control of your experience on ArXiv, showing you only the 
+papers that you are interested in.
 
 Put simply, it is a powerful filtering system, combined with a LLM powered ranking algorithm. This means you only see what is relevant to you, and what is most relevant first. 
+
+![Banner image of a woman drinking a coffee and browsing on her laptop.](Assets/Banner.jpg)
 
 ## How To Use
 

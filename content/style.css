@@ -70,10 +70,13 @@ a:focus {
 }
 
 main img { /* Added new rule for all images in main content */
-  width: 100%;
-  height: auto;
+  width: 90%; /* Changed from auto to 100% */
+  /* height: auto; */
   display: block;
   border: 5px solid black; /* Added black frame with 5px linewidth */
+  margin: 0 auto; /* Center images */
+  padding: 10px; /* Add padding around images */
+  
 }
 
 /* -------------------------------------------------------- */
