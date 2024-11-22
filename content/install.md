@@ -12,7 +12,7 @@ Simply navigate to the folder you wish to run the application from and run the c
 
 ```bash
 
-git pull https://github.com/ChiScraper/ChiScraper.git
+git clone https://github.com/ChiScraper/ChiScraper.git
 pip install -r requirements
 
 ```
